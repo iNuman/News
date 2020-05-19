@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity(){
 
         val newsRepository = NewsRepository(db = AppDatabase(this))
         val newsViewModeProviderFactory =
-            NewsViewModeProviderFactory(newsRepository = newsRepository)
+            NewsViewModeProviderFactory(application = application, newsRepository = newsRepository)
+        // now to show error message we'll show a toast in fragments where we'd logged errors
         newsViewModel =
             ViewModelProvider(this, newsViewModeProviderFactory).get(NewsViewModel::class.java)
 

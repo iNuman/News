@@ -13,7 +13,9 @@
     <string name="search_news">Search News...</string>
     <string name="published_at">Published At</string>
     <string name="source">Source</string>
-    <string name="loading">Connected Loading Resources……</string>
-    <string name="noInternet">No Internet Connectivity :(</string>
+    <string name="loading">Loading Resources…</string>
+    <string name="noInternet">No Internet Connection(</string>
+    <string name="networkFailure">Network Failure</string>
+    <string name="conversionFailure">Conversion Failure</string>
 
 </resources>

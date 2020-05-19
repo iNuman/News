@@ -3,13 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/breakingNewsFragment">
+    app:startDestination="@id/splashFragment">
 
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="i.numan.news.splash_.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_breakingNewsFragment"
+            app:destination="@id/breakingNewsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/breakingNewsFragment"
         android:name="i.numan.news.ui_.fragments_.BreakingNewsFragment"
         android:label="fragment_breaking_news"
-        tools:layout="@layout/fragment_breaking_news" >
+        tools:layout="@layout/fragment_breaking_news">
         <action
             android:id="@+id/action_breakingNewsFragment_to_articleFragment"
             app:destination="@id/articleFragment"
@@ -17,45 +30,47 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_breakingNewsFragment_to_savedNewsFragment"
+            app:destination="@id/savedNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/savedNewsFragment"
         android:name="i.numan.news.ui_.fragments_.SavedNewsFragment"
         android:label="fragment_saved_news"
-        tools:layout="@layout/fragment_saved_news" >
+        tools:layout="@layout/fragment_saved_news">
         <action
             android:id="@+id/action_savedNewsFragment_to_articleFragment"
             app:destination="@id/articleFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="i.numan.news.ui_.fragments_.SearchNewsFragment"
         android:label="fragment_search_news"
-        tools:layout="@layout/fragment_search_news"
-        >
+        tools:layout="@layout/fragment_search_news">
         <action
             android:id="@+id/action_searchNewsFragment_to_articleFragment"
             app:destination="@id/articleFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_searchNewsFragment_to_savedNewsFragment"
+            app:destination="@id/savedNewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
         android:name="i.numan.news.ui_.fragments_.ArticleFragment"
         android:label="fragment_article"
-        tools:layout="@layout/fragment_article" >
+        tools:layout="@layout/fragment_article">
         <argument
             android:name="article"
             app:argType="i.numan.news.dataclass_.Article" />
     </fragment>
-    <activity
-        android:id="@+id/newsAppSplashScreen"
-        android:name="i.numan.news.splash_.NewsAppSplashScreen"
-        android:label="NewsAppSplashScreen" />
+
 </navigation>

@@ -1,11 +1,6 @@
 package i.numan.news.ui_.fragments_
 
-import android.content.Context
-import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -13,15 +8,14 @@ import android.widget.AbsListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import i.numan.news.R
 import i.numan.news.adapters_.NewsRecyclerViewAdapter
-import i.numan.news.api.ConnectivityReceiver
 import i.numan.news.ui_.MainActivity
 import i.numan.news.ui_.viewmodel_.NewsViewModel
 import i.numan.news.util_.Constants.Companion.QUERY_PAGE_SIZE
@@ -29,7 +23,7 @@ import i.numan.news.util_.Resource
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 
 
-class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news){
+class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     val TAG = "BreakingNewsFragment"
     lateinit var viewModel: NewsViewModel
     lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
@@ -43,8 +37,9 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        settingToolbar()
+        settingToolbarAndBottomNavigation()
         viewModel = (activity as MainActivity).newsViewModel
+
         setupRecyclerView()
 
         handlingViewModelObserver()
@@ -66,15 +61,17 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news){
                             // because list differ is not working properly with mutableList so I changed it to list again
                             val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2
                             isLastPage = viewModel.breakingNewsPage == totalPages
-                            if (isLastPage){
-                                pagination_progressbar.setPadding(0,0,0,0)
+                            if (isLastPage) {
+                                pagination_progressbar.setPadding(0, 0, 0, 0)
                             }
                         }
                     }
                     is Resource.Error -> {
                         hideProgressBar()
                         response.message?.let { message ->
-                            Log.e(TAG, "Error Occurred Getting Data $message")
+                         findNavController().navigate(R.id.action_breakingNewsFragment_to_savedNewsFragment)
+                            Toast.makeText(context, "$message", Toast.LENGTH_LONG).show()
+
                         }
                     }
                     is Resource.Loading -> {
@@ -87,16 +84,18 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news){
             })
     }
 
-    private fun settingToolbar() {
+    private fun settingToolbarAndBottomNavigation() {
         openFabAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.fab_open
         )
-        val v = activity?.findViewById<ConstraintLayout>(R.id.header)
-        v?.animation = openFabAnimation
-        v?.visibility = View.VISIBLE
+
         val label = activity?.findViewById<TextView>(R.id.lbl2)
         label?.text = "Breaking News"
+        (activity as MainActivity).apply {
+            findViewById<ConstraintLayout>(R.id.header).animation = openFabAnimation
+            findViewById<CoordinatorLayout>(R.id.coordinatorLayout).animation = openFabAnimation
+        }
     }
 
     private fun hideProgressBar() {
@@ -159,7 +158,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news){
             )
         }
     }
-
 
 
 }

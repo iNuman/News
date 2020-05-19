@@ -1,13 +1,14 @@
 package i.numan.news.ui_.fragments_
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.AbsListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,7 +22,6 @@ import i.numan.news.ui_.viewmodel_.NewsViewModel
 import i.numan.news.util_.Constants
 import i.numan.news.util_.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import i.numan.news.util_.Resource
-import kotlinx.android.synthetic.main.fragment_article.*
 import kotlinx.android.synthetic.main.fragment_search_news.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -48,9 +48,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     lateinit var openFabAnimation: Animation
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        settingToolbar()
 
+        settingToolbarAndBottomNavigation()
         viewModel = (activity as MainActivity).newsViewModel
+
         setupRecyclerView()
         settingTextChangeListener()
         settingViewLifeCycleOwner()
@@ -73,7 +74,8 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { errorMessage ->
-                        Log.d(TAG, "Data $errorMessage")
+                        findNavController().navigate(R.id.action_searchNewsFragment_to_savedNewsFragment)
+                        Toast.makeText(context, "$errorMessage", Toast.LENGTH_LONG).show()
 
                     }
                 }
@@ -103,16 +105,19 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
     }
 
-    private fun settingToolbar() {
+    private fun settingToolbarAndBottomNavigation() {
         openFabAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.fab_open
         )
-        val v = activity?.findViewById<ConstraintLayout>(R.id.header)
-        v?.animation = openFabAnimation
-        v?.visibility = View.VISIBLE
+
         val label = activity?.findViewById<TextView>(R.id.lbl2)
         label?.text = "Search Articles"
+        (activity as MainActivity).apply {
+            findViewById<ConstraintLayout>(R.id.header).animation = openFabAnimation
+            findViewById<CoordinatorLayout>(R.id.coordinatorLayout).animation = openFabAnimation
+        }
+
     }
 
     private fun hideProgressBar() {

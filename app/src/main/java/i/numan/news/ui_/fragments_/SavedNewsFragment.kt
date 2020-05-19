@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -32,7 +33,12 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       settingToolbarVisibility()
+       settingToolbarAndBottomNavigation()
+        viewModel = (activity as MainActivity).newsViewModel
+        (activity as MainActivity).apply {
+            findViewById<ConstraintLayout>(R.id.header).visibility = View.VISIBLE
+            findViewById<CoordinatorLayout>(R.id.coordinatorLayout).visibility = View.VISIBLE
+        }
 
         viewModel = (activity as MainActivity).newsViewModel
         setupRecyclerView()
@@ -40,18 +46,19 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         gettingSavedNews()
     }
 
-    private fun settingToolbarVisibility() {
+    private fun settingToolbarAndBottomNavigation() {
         openFabAnimation = AnimationUtils.loadAnimation(
             context,
             R.anim.fab_open
         )
-        val v = activity?.findViewById<ConstraintLayout>(R.id.header)
-        v?.animation = openFabAnimation
-        v?.visibility = View.VISIBLE
-        val label = activity?.findViewById<TextView>(R.id.lbl2)
-        label?.text = "Saved Articles"
-    }
 
+        val label = activity?.findViewById<TextView>(R.id.lbl2)
+        label?.text = "SavedArticles"
+        (activity as MainActivity).apply {
+            findViewById<ConstraintLayout>(R.id.header).animation = openFabAnimation
+            findViewById<CoordinatorLayout>(R.id.coordinatorLayout).animation = openFabAnimation
+        }
+    }
     private fun gettingSavedNews() {
         viewModel.getSavedNews().observe(viewLifecycleOwner, Observer { articles ->
             newsRecyclerViewAdapter.submitList(list = articles)
