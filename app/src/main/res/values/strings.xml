@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">News</string>
+    <!--    url: https://newsapi.org/account-->
+    <string name="API_KEY">835ff166e70b41088ecde54724a5ee65</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="list_image">Breaking News Place Holder</string>
+    <string name="breaking_news_description">Breaking News Description</string>
+    <string name="news_title">News Title</string>
+    <string name="news">News!</string>
+    <string name="databaseName">ArticleDatabase.db</string>
+    <string name="search_news">Search News...</string>
+    <string name="published_at">Published At</string>
+    <string name="source">Source</string>
+    <string name="loading">Connected Loading Resources……</string>
+    <string name="noInternet">No Internet Connectivity :(</string>
+
+</resources>
