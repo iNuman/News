@@ -1,23 +1,26 @@
 # News
 News App uisng Jetpack Navigation Components, Retrofit and MVVM
 
+## News Api Link
+<p align="left">
+<ul style="list-style-type:circle;">
+  <li><a href="https://newsapi.org/">https://newsapi.org/</a>
+</ul></p>
 
-## Screenshot
-<p align="center">
-  <img src="" width="270" height="450">
-</p>
+
+## Features
+- Saving Data locally in Room
+- Search News functionality
+- Offline data Handling if Internet is not available
+- Pagination
+- Recycler View along with Diffutil
+- MVVM Architecture 
+
 
 ## Pre-Requisites
 
 **App Level Gradle**
 ```kotlin
- apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
-
-
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
