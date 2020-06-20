@@ -4,14 +4,14 @@ News App uisng Jetpack Navigation Components, Retrofit and MVVM
 
 ## Screenshot
 <p align="center">
-  <img src="https://github.com/iNuman/QuizApp/blob/master/QuizApp.gif" width="270" height="450">
+  <img src="" width="270" height="450">
 </p>
 
 ## Pre-Requisites
 
 **App Level Gradle**
 ```kotlin
-   apply plugin: 'com.android.application'
+ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
