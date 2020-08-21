@@ -134,11 +134,9 @@ class NewsViewModel(
                 is IOException -> breakingNews.postValue(
                     Resource.Error(message = getApplication<NewsApplication>().getString(R.string.networkFailure)))
                     else -> breakingNews.postValue(
-                    Resource.Error(
-                        message = getApplication<NewsApplication>().getString(
+                    Resource.Error(message = getApplication<NewsApplication>().getString(
                             R.string.conversionFailure
-                        )
-                    )
+                        ))
                 )
             }
 
@@ -187,16 +185,14 @@ class NewsViewModel(
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager =
-            getApplication<NewsApplication>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = getApplication<NewsApplication>().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         /*
         * Since activeInternetInfo is deprecated from MarshMallow(26) and onwards
         * */
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            val activeNetwork =
-                connectivityManager.activeNetwork ?: return false // if null return false
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            val activeNetwork = connectivityManager.activeNetwork ?: return false // if null return false
+
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
 
             return when {
                 capabilities.hasTransport(TRANSPORT_WIFI) -> true
