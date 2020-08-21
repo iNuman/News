@@ -8,12 +8,14 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import i.numan.news.R
 import i.numan.news.adapters_.NewsRecyclerViewAdapter
 import i.numan.news.dataclass_.Article
@@ -23,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_saved_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.*
 import kotlinx.android.synthetic.main.fragment_search_news.recycler_view
 
-
+@AndroidEntryPoint
 class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
-    lateinit var viewModel: NewsViewModel
+    val viewModel: NewsViewModel by viewModels()
     lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
 
     lateinit var openFabAnimation: Animation
@@ -34,13 +36,13 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        settingToolbarAndBottomNavigation()
-        viewModel = (activity as MainActivity).newsViewModel
+
         (activity as MainActivity).apply {
             findViewById<ConstraintLayout>(R.id.header).visibility = View.VISIBLE
             findViewById<CoordinatorLayout>(R.id.coordinatorLayout).visibility = View.VISIBLE
         }
 
-        viewModel = (activity as MainActivity).newsViewModel
+
         setupRecyclerView()
         settingOnSwipeToDelete(view)
         gettingSavedNews()

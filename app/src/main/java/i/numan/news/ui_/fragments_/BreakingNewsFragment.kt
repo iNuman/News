@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import i.numan.news.R
 import i.numan.news.adapters_.NewsRecyclerViewAdapter
 import i.numan.news.ui_.MainActivity
@@ -22,10 +24,10 @@ import i.numan.news.util_.Constants.Companion.QUERY_PAGE_SIZE
 import i.numan.news.util_.Resource
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 
-
+@AndroidEntryPoint
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     val TAG = "BreakingNewsFragment"
-    lateinit var viewModel: NewsViewModel
+    val viewModel: NewsViewModel by viewModels()
     lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
 
     var isLoading = false
@@ -38,7 +40,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         super.onViewCreated(view, savedInstanceState)
 
         settingToolbarAndBottomNavigation()
-        viewModel = (activity as MainActivity).newsViewModel
 
         setupRecyclerView()
 

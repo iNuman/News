@@ -12,8 +12,10 @@ import android.webkit.WebViewClient
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import i.numan.news.R
 import i.numan.news.dataclass_.Article
 import i.numan.news.ui_.MainActivity
@@ -21,10 +23,11 @@ import i.numan.news.ui_.viewmodel_.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_article.*
 
 
+@AndroidEntryPoint
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     // TODO: FADE IN ANIMATION TO FAB BUTTON FILL AFTER FROM MATERIAL DESIGN IMPLEMENTATION OF MINE
-    lateinit var viewModel: NewsViewModel
+   val viewModel: NewsViewModel by viewModels()
     val args: ArticleFragmentArgs by navArgs()
     private var isDataLoaded = false
 
@@ -35,7 +38,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
         handlingToolbar()
         openFabAnimation = AnimationUtils.loadAnimation(context, R.anim.fab_open)
-        viewModel = (activity as MainActivity).newsViewModel
         val article = args.article
         loadingDataInWebView(article)
         handlingFabButton(view, article)

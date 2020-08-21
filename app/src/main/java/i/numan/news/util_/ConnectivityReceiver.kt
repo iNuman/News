@@ -1,4 +1,4 @@
-package i.numan.news.api
+package i.numan.news.util_
 
 import android.content.BroadcastReceiver
 import android.content.Context

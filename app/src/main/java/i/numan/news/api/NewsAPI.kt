@@ -31,7 +31,7 @@ interface NewsAPI {
         * i set the page number to 1 initially
          */
 
-    ):Response<NewsResponse>
+    ):Response<List<NewsResponse>>
 
     /*
     * Now for searching
@@ -47,7 +47,7 @@ interface NewsAPI {
         pageNumber: Int = 1,
         @Query("apiKey")
         apiKey: String = API_KEY
-    ):Response<NewsResponse>
+    ):Response<List<NewsResponse>>
 
 
 

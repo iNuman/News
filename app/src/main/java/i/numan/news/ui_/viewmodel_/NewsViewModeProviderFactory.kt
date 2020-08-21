@@ -1,3 +1,4 @@
+/*
 package i.numan.news.ui_.viewmodel_
 
 import android.app.Application
@@ -12,4 +13,4 @@ class NewsViewModeProviderFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return NewsViewModel(application = application, newsRepository = newsRepository) as T
     }
-}
+}*/

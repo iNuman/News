@@ -11,10 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import i.numan.news.R
 import i.numan.news.adapters_.NewsRecyclerViewAdapter
 import i.numan.news.ui_.MainActivity
@@ -36,10 +38,11 @@ import kotlinx.coroutines.launch
 * class trough some fragments using navigation args
 * and kotlin will do serialization for us
  */
+@AndroidEntryPoint
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
     private val TAG = "SearchNewsFragment"
-    lateinit var viewModel: NewsViewModel
+    val viewModel: NewsViewModel by viewModels()
     lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
 
     var isLoading = false
@@ -50,7 +53,6 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         super.onViewCreated(view, savedInstanceState)
 
         settingToolbarAndBottomNavigation()
-        viewModel = (activity as MainActivity).newsViewModel
 
         setupRecyclerView()
         settingTextChangeListener()

@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".application_.NewsApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_news_launcher"
         android:label="@string/app_name"
@@ -25,7 +25,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <receiver android:name=".api.ConnectivityReceiver" />
+        <receiver android:name=".util_.ConnectivityReceiver" />
     </application>
 
 </manifest>
