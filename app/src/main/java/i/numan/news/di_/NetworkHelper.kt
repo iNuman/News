@@ -4,9 +4,15 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import i.numan.news.application_.NewsApplication
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class NetworkHelper @Inject constructor(@ApplicationContext private val app: Context) {

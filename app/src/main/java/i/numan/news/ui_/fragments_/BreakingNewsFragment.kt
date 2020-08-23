@@ -48,7 +48,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     }
 
     private fun handlingViewModelObserver() {
-        viewModel.breakingNews.observe(
+        viewModel.breakingNewsDataClass.observe(
             viewLifecycleOwner,
             Observer { response -> // breaking will be having either success or fail
                 // response from view model

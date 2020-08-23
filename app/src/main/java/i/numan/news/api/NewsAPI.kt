@@ -1,6 +1,6 @@
 package i.numan.news.api
 
-import i.numan.news.dataclass_.NewsResponse
+import i.numan.news.dataclass_.NewsResponseDataClass
 import i.numan.news.util_.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
@@ -31,7 +31,7 @@ interface NewsAPI {
         * i set the page number to 1 initially
          */
 
-    ):Response<List<NewsResponse>>
+    ):Response<NewsResponseDataClass>
 
     /*
     * Now for searching
@@ -47,7 +47,7 @@ interface NewsAPI {
         pageNumber: Int = 1,
         @Query("apiKey")
         apiKey: String = API_KEY
-    ):Response<List<NewsResponse>>
+    ):Response<NewsResponseDataClass>
 
 
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import i.numan.news.R
 import i.numan.news.dataclass_.Article
-import i.numan.news.dataclass_.NewsResponse
+import i.numan.news.dataclass_.NewsResponseDataClass
 import i.numan.news.di_.NetworkHelper
 import i.numan.news.repository_.NewsRepository
 import i.numan.news.util_.Resource
@@ -16,19 +16,14 @@ import retrofit2.Response
 import java.io.IOException
 
 class NewsViewModel @ViewModelInject constructor(
-    val application: Application,
+    private val application: Application,
     val networkHelper: NetworkHelper,
     val newsRepository: NewsRepository
-/*
-* Now to use ApplicationContext we we'll be using
-* Android View Model instead of view model
-*
- */
 ) : ViewModel() { // Now we're good to go
 
-    var breakingNews:MutableLiveData<Resource<List<NewsResponse>>> = MutableLiveData()
+    var breakingNewsDataClass:MutableLiveData<Resource<NewsResponseDataClass>> = MutableLiveData()
     var breakingNewsPage: Int = 1
-    var breakingNewsResponse: List<NewsResponse>? = null
+    var breakingNewsResponseDataClass: NewsResponseDataClass? = null
 
     /*
    * Information about above declarations
@@ -36,9 +31,9 @@ class NewsViewModel @ViewModelInject constructor(
    * Number will always reset when we rotate the device and as we know that view model
    * doesn't get destroyed when we rotate the device screen
     */
-    var searchNews: MutableLiveData<Resource<List<NewsResponse>>> = MutableLiveData()
+    var searchNewsDataClass: MutableLiveData<Resource<NewsResponseDataClass>> = MutableLiveData()
     var searchNewsPage: Int = 1
-    var searchingNewsResponse: List<NewsResponse>? = null
+    var searchingNewsResponseDataClass: NewsResponseDataClass? = null
 
     init {
         // we call the network call function here
@@ -54,45 +49,45 @@ class NewsViewModel @ViewModelInject constructor(
         safeSearchNewsCall(searchQuery = searchQuery)
     }
 
-    private fun handleBreakingNewsResponse(response: Response<List<NewsResponse>>): Resource<List<NewsResponse>>? {
+    private fun handleBreakingNewsResponse(responseDataClass: Response<NewsResponseDataClass>): Resource<NewsResponseDataClass>? {
         /*
         * Now we'll decide which state we'll whether we want to emit
         * Success state in our breakingNews Live data or Error State
          */
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
+        if (responseDataClass.isSuccessful) {
+            responseDataClass.body()?.let { resultResponse ->
                 breakingNewsPage++ // every time we get response we'll increase the page by 1
-                if (breakingNewsResponse == null) { // initially pass the resultResponse to breakingNews Response
-                    breakingNewsResponse = resultResponse
+                if (breakingNewsResponseDataClass == null) { // initially pass the resultResponse to breakingNews Response
+                    breakingNewsResponseDataClass = resultResponse
                 } else {
                     // if this is not the case then our resultResponse will be add to our already BreakingNewsResponse(old += new Responses)
-                    val oldArticle = breakingNewsResponse!![0].articles
-                    val newArticles = resultResponse[0].articles
+                    val oldArticle = breakingNewsResponseDataClass?.articles
+                    val newArticles = resultResponse.articles
                     oldArticle?.addAll(newArticles)
                 }
-                return Resource.Success(breakingNewsResponse ?: resultResponse)
+                return Resource.Success(breakingNewsResponseDataClass ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        return Resource.Error(responseDataClass.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<List<NewsResponse>>): Resource<List<NewsResponse>>? {
+    private fun handleSearchNewsResponse(responseDataClass: Response<NewsResponseDataClass>): Resource<NewsResponseDataClass>? {
 
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
+        if (responseDataClass.isSuccessful) {
+            responseDataClass.body()?.let { resultResponse ->
                 searchNewsPage++
-                if (searchingNewsResponse == null) {
-                    searchingNewsResponse = resultResponse
+                if (searchingNewsResponseDataClass == null) {
+                    searchingNewsResponseDataClass = resultResponse
                 } else {
-                    val oldSearchResponse = breakingNewsResponse!![0].articles
-                    val newSearchResponse = resultResponse[0].articles
+                    val oldSearchResponse = breakingNewsResponseDataClass?.articles
+                    val newSearchResponse = resultResponse.articles
                     oldSearchResponse?.addAll(newSearchResponse)
                 }
 
-                return Resource.Success(searchingNewsResponse ?: resultResponse)
+                return Resource.Success(searchingNewsResponseDataClass ?: resultResponse)
             }
         }
-        return Resource.Error(response.message())
+        return Resource.Error(responseDataClass.message())
     }
 
     fun saveNews(article: Article) = viewModelScope.launch {
@@ -106,7 +101,7 @@ class NewsViewModel @ViewModelInject constructor(
     }
 
     private suspend fun safeBreakingNewsCall(countryCode: String) {
-        breakingNews.postValue(Resource.Loading())
+        breakingNewsDataClass.postValue(Resource.Loading())
         try {
             if (networkHelper.hasInternetConnection()) {
                 // now we'll make actual response
@@ -115,33 +110,28 @@ class NewsViewModel @ViewModelInject constructor(
                         countryCode = countryCode,
                         pageNumber = breakingNewsPage
                     )
-                breakingNews.postValue(handleBreakingNewsResponse(response = response))
+                breakingNewsDataClass.postValue(handleBreakingNewsResponse(responseDataClass = response))
             } else {
-                breakingNews.postValue(
+                breakingNewsDataClass.postValue(
                     Resource.Error(
-                        message = application.getString(
-                            R.string.networkFailure
-                        )
+                        message = application.getString(R.string.networkFailure)
                     )
                 )
             }
 
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> breakingNews.postValue(
+                is IOException -> breakingNewsDataClass.postValue(
                     Resource.Error(message = application.getString(R.string.networkFailure)))
-                    else -> breakingNews.postValue(
-                    Resource.Error(message = application.getString(
-                            R.string.conversionFailure
-                        ))
-                )
+                    else -> breakingNewsDataClass.postValue(
+                    Resource.Error(message = application.getString(R.string.conversionFailure))                )
             }
 
         }
     }
 
     private suspend fun safeSearchNewsCall(searchQuery: String) {
-        searchNews.postValue(Resource.Loading())
+        searchNewsDataClass.postValue(Resource.Loading())
         try {
             if (networkHelper.hasInternetConnection()) {
                 val response =
@@ -149,31 +139,22 @@ class NewsViewModel @ViewModelInject constructor(
                         countryCode = searchQuery,
                         pageNumber = searchNewsPage
                     )
-                searchNews.postValue(handleSearchNewsResponse(response = response))
+                searchNewsDataClass.postValue(handleSearchNewsResponse(responseDataClass = response))
             } else {
-                searchNews.postValue(
+                searchNewsDataClass.postValue(
                     Resource.Error(
-                        message = application.getString(
-                            R.string.noInternet
-                        )
-                    )
+                        message = application.getString(R.string.noInternet))
                 )
             }
 
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> searchNews.postValue(
-                    Resource.Error(
-                        message = application.getString(
-                            R.string.networkFailure
-                        )
+                is IOException -> searchNewsDataClass.postValue(
+                    Resource.Error(message = application.getString(R.string.networkFailure)
                     )
                 )
-                else -> searchNews.postValue(
-                    Resource.Error(
-                        message = application.getString(
-                            R.string.conversionFailure
-                        )
+                else -> searchNewsDataClass.postValue(
+                    Resource.Error(message = application.getString(R.string.conversionFailure)
                     )
                 )
             }

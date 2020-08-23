@@ -1,6 +1,6 @@
 package i.numan.news.dataclass_
 
-data class NewsResponse(
+data class NewsResponseDataClass(
     val articles: MutableList<Article>,
     val status: String,
     val totalResults: Int
