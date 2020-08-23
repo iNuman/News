@@ -9,6 +9,7 @@ News App uisng Jetpack Navigation Components, Retrofit and MVVM
 
 
 ## Features
+- Dagger Hilt   [Step by Step Guide](https://blog.mindorks.com/dagger-hilt-tutorial)
 - Saving Data locally in Room
 - Search News functionality
 - Offline data Handling if Internet is not available
@@ -53,6 +54,7 @@ News App uisng Jetpack Navigation Components, Retrofit and MVVM
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
 ```
+
 
 ## Contact
 <p align="left">
